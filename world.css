@@ -1,0 +1,44 @@
+body {
+  background-image: url("GENbackground.png");
+  background-size: cover;          
+  background-position: center;      
+  background-repeat: no-repeat;     
+  background-attachment: fixed;     
+  min-height: 100vh;                
+}
+
+
+
+header {
+  justify-self: center;
+  color: bisque;
+  opacity: 90%;
+}
+
+.controls{
+  justify-self: center;
+}
+
+
+
+
+
+/* Table stuff */
+
+#result table {
+    border-collapse: collapse;    
+    margin: 0 auto;               
+    color: black;
+    background-color: bisque;
+    opacity: 80%;
+}
+
+#result th,
+#result td {
+    border: 1px solid blue;
+    padding: 8px 12px;
+}
+
+#result tbody tr:nth-child(even) {
+    background-color: rgba(30, 48, 60, 0.15);
+}
