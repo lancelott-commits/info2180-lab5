@@ -1,1 +1,34 @@
-/* Add your own styles */
+
+#result table {
+    border-collapse: collapse;    
+    margin: 0 auto;               
+    color: black;
+}
+
+#result th,
+#result td {
+    border: 1px solid blue;
+    padding: 8px 12px;
+}
+
+#result tbody tr:nth-child(even) {
+    background-color: rgba(30, 48, 60, 0.15);
+}
+
+
+
+
+
+
+
+
+
+/* 
+
+<ul>
+<?php foreach ($results as $row): ?>
+  <li><?= $row['name'] . ' is ruled by ' . $row['head_of_state']; ?></li>
+<?php endforeach; ?>
+</ul>
+
+/
