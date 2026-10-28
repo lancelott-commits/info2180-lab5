@@ -6,19 +6,50 @@ $password = 'password123';
 $dbname = 'world';
 
 $country = $_GET['country'] ?? '';
+$lookup = $_GET['lookup'] ?? 'country';
+
 
 
 $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-$stmt = $conn->query("SELECT * FROM countries WHERE name LIKE '%$country%'");
 
-$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if ($lookup === "cities") {
+    $stmt = $conn->prepare(
+        "SELECT cities.name, cities.district, cities.population
+         FROM cities
+         JOIN countries ON cities.country_code = countries.code
+         WHERE countries.name LIKE :country"
+    );
+    $stmt->execute([':country' => "%$country%"]);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    ?>
+    <table>
+      <thead>
+        <tr>
+          <th>City Name</th>
+          <th>District</th>
+          <th>Population</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($results as $row): ?>
+          <tr>
+            <td><?= htmlspecialchars($row['name']); ?></td>
+            <td><?= htmlspecialchars($row['district']); ?></td>
+            <td><?= htmlspecialchars($row['population']); ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+    <?php
+}
+else{
+  $stmt = $conn->query("SELECT * FROM countries WHERE name LIKE '%$country%'");
 
+ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+ ?>
 
-?>
-
-
-<table>
+ <table>
   <thead>
     <tr> 
       <th> Country Name </th>
@@ -36,13 +67,12 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <td> <?= $row['head_of_state']; ?>  </td>
       </tr>
     <?php endforeach; ?>
-
-
   </tbody>
 
-</table>
-
-
+  </table>
+  <?php
+}
+    
 
 
 
