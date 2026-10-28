@@ -14,10 +14,11 @@ $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $p
 
 if ($lookup === "cities") {
     $stmt = $conn->prepare(
-        "SELECT cities.name, cities.district, cities.population
+        "SELECT countries.name AS country_name, cities.name AS city_name, cities.district, cities.population
          FROM cities
          JOIN countries ON cities.country_code = countries.code
-         WHERE countries.name LIKE :country"
+         WHERE countries.name LIKE :country
+         ORDER BY countries.name, cities.name"
     );
     $stmt->execute([':country' => "%$country%"]);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -25,6 +26,7 @@ if ($lookup === "cities") {
     <table>
       <thead>
         <tr>
+          <th>Country</th>
           <th>City Name</th>
           <th>District</th>
           <th>Population</th>
@@ -33,9 +35,10 @@ if ($lookup === "cities") {
       <tbody>
         <?php foreach ($results as $row): ?>
           <tr>
-            <td><?= htmlspecialchars($row['name']); ?></td>
-            <td><?= htmlspecialchars($row['district']); ?></td>
-            <td><?= htmlspecialchars($row['population']); ?></td>
+            <td><?= $row['country_name']; ?></td>
+            <td><?=  $row['city_name']; ?></td>
+            <td><?= $row['district']; ?></td>
+            <td><?= $row['population']; ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
